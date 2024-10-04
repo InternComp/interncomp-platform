@@ -1,6 +1,7 @@
 [submodule "interncomp-frontend"]
 	path = interncomp-frontend
 	url = https://github.com/InternComp/interncomp-frontend.git
-	
+
 [submodule "interncomp-backend"]
 	path = interncomp-backend
+	url = https://github.com/InternComp/interncomp-backend.git
