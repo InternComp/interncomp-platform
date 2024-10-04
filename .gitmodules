@@ -1,0 +1,3 @@
+[submodule "interncomp-frontend"]
+	path = interncomp-frontend
+	url = https://github.com/InternComp/interncomp-frontend.git
