@@ -5,3 +5,7 @@
 [submodule "interncomp-backend"]
 	path = interncomp-backend
 	url = https://github.com/InternComp/interncomp-backend.git
+
+[submodule "interncomp-database"]
+	path = interncomp-database
+	url = https://github.com/InternComp/interncomp-database.git
