@@ -2,13 +2,15 @@
 	path = interncomp-frontend
 	url = https://github.com/InternComp/interncomp-frontend.git
 	branch = main
-
 [submodule "interncomp-backend"]
 	path = interncomp-backend
 	url = https://github.com/InternComp/interncomp-backend.git
 	branch = main
-
 [submodule "interncomp-database"]
 	path = interncomp-database
 	url = https://github.com/InternComp/interncomp-database.git
+	branch = main
+[submodule "interncomp-documentation"]
+	path = interncomp-documentation
+	url = https://github.com/InternComp/interncomp-documentation.git
 	branch = main
