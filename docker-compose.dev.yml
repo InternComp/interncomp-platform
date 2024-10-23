@@ -7,38 +7,42 @@ services:
       - ./interncomp-frontend:/app
       - /app/node_modules # Avoid overwriting node_modules
     ports:
-      - '5173:5173' # Vite default port
+      - '4000:4000' # Frontend is being set at port 4000 in vite.config.js
     networks:
       - app-network
 
-  # backend:
-  #   build:
-  #     context: ./interncomp-backend
-  #     dockerfile: Dockerfile.dev
-  #   volumes:
-  #     - ./interncomp-backend:/app
-  #     - /app/node_modules # Avoid overwriting node_modules
-  #   ports:
-  #     - '4000:3000' # Map backend container's port 3000 to local port 4000
-  #   depends_on:
-  #     - db
-  #   environment:
-  #     DATABASE_URL: postgres://postgres:password@db:5432/interncomp-database
-  #   networks:
-  #     - app-network
-
-  db:
+  postgres:
     image: postgres:15-alpine
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: interncomp-database
     ports:
-      - '5432' # Map some automatically chosen machine port to container's PostgreSQL port 5432
+      - '5433:5432' # Map some automatically chosen machine port to container's PostgreSQL port 5432
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
       - app-network
+
+  backend:
+    build:
+      context: ./interncomp-backend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./interncomp-backend:/app
+      - /app/node_modules # Avoid overwriting node_modules
+    ports:
+      - '3000:3000' # Map backend container's port 3000 to local port 3000
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://postgres:password@postgres:5432/interncomp-database
+    # command: sh -c "npm install && npx prisma migrate dev && npm run seed && "./wait-for-it.sh postgres:5432 -- npm run dev""
+    networks:
+      - app-network
+    # entrypoint: ["/bin/sh", "-c", "./wait-for-it.sh postgres:5432 -- npm run dev"]
+
+
 
 networks:
   app-network:
