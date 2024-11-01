@@ -11,8 +11,10 @@ services:
     networks:
       - app-network
 
-  postgres:
+  db:
+    container_name: pg_db
     image: postgres:15-alpine
+    restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
@@ -28,21 +30,17 @@ services:
     build:
       context: ./interncomp-backend
       dockerfile: Dockerfile.dev
+    depends_on:
+      - db
     volumes:
       - ./interncomp-backend:/app
       - /app/node_modules # Avoid overwriting node_modules
     ports:
       - '3000:3000' # Map backend container's port 3000 to local port 3000
-    depends_on:
-      - postgres
-    environment:
-      DATABASE_URL: postgres://postgres:password@postgres:5432/interncomp-database
-    # command: sh -c "npm install && npx prisma migrate dev && npm run seed && "./wait-for-it.sh postgres:5432 -- npm run dev""
+    env_file:
+      - ./interncomp-backend/.env
     networks:
       - app-network
-    # entrypoint: ["/bin/sh", "-c", "./wait-for-it.sh postgres:5432 -- npm run dev"]
-
-
 
 networks:
   app-network:
